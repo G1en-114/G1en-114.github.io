@@ -15,7 +15,7 @@
 
 
 
-<title>归档 | G1en&#39;s Blog</title>
+<title>friends | G1en&#39;s Blog</title>
 
 
 
@@ -137,22 +137,176 @@
     }
 </script>
             <div class="main">
-                <div class="post-wrap archive">
-    
-    
-        
+                <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        
-            <h3>2026</h3>
-        
+    <meta name="author" content="G1en">
 
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2026/02/05/minicpu/">基于RISC-V指令集的mini处理器</a>
-            <span class="archive-item-date">二月 5, 2026</span>
-        </article>
+
+
+    <meta name="description" content="默认生成的一句话">
+
+
+
+<title>friends | G1en&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
     
     
-</div>
+        
+    
+
+
+
+<!-- 直接使用主题原生头部（只渲染一次导航） -->
+
+<style>
+  /* 强制隐藏页面内的重复导航/内容 */
+  .post-content .nav-container,
+  .post-content .post-title + .nav-container,
+  .post-content #friends ~ .footer {
+    display: none !important;
+  }
+
+  /* 页面容器 */
+  .friends-page {
+    max-width: 900px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+  }
+
+  /* 标题 */
+  .friends-title {
+    text-align: center;
+    font-size: 1.7rem;
+    color: #333;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+  .friends-title::after {
+    content: "";
+    width: 50px;
+    height: 2px;
+    background: #49b1f5;
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* 友链网格 */
+  .friends-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 2rem;
+  }
+
+  /* 友链卡片 */
+  .friend-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    padding: 1.8rem 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  .friend-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(73, 177, 245, 0.15);
+  }
+
+  /* 头像 */
+  .friend-avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1.2rem;
+    border: 2px solid #f0f4f8;
+  }
+
+  /* 昵称+地址 */
+  .friend-name {
+    font-size: 1.05rem;
+    color: #2d3748;
+    margin-bottom: 0.8rem;
+    font-weight: 500;
+  }
+  .friend-link {
+    font-size: 0.85rem;
+    color: #718096;
+    word-break: break-all;
+    transition: color 0.3s ease;
+  }
+  .friend-card:hover .friend-link { color: #49b1f5; }
+
+  /* 空状态 */
+  .friends-empty {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 3rem 2rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    color: #718096;
+    font-size: 1rem;
+  }
+
+  /* 手机端适配 */
+  @media (max-width: 768px) {
+    .friends-page { margin: 2rem auto; }
+    .friends-grid { gap: 1.5rem; }
+  }
+</style>
+
+<main class="friends-page">
+  <h1 class="friends-title">friends</h1>
+
+  <div class="friends-grid">
+    
+      
+        <div class="friend-card">
+          <img src="https://suzuran28.github.io/img/suzuran.jpg" alt="suzuran28" class="friend-avatar">
+          <div class="friend-name">suzuran28</div>
+          <a href="https://suzuran28.github.io" target="_blank" rel="noopener noreferrer" class="friend-link">
+            suzuran28.github.io
+          </a>
+        </div>
+      
+    
+  </div>
+</main>
+
+<!-- 只保留一个主题原生页脚 -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G1en | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
             </div>
             <footer id="footer" class="footer">
     <div class="copyright">
