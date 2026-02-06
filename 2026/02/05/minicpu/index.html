@@ -243,11 +243,11 @@
 <h2 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h2><h3 id="准备元件"><a href="#准备元件" class="headerlink" title="准备元件"></a>准备元件</h3><ol>
 <li>16个寄存器组成的寄存器堆（这里我采用了32个寄存器的），需要注意的是寄存器x0是在硬件上锁死为零的。</li>
 </ol>
-<p>![image-20260205230039985](D:\G1en‘s Blog\myBlog\public\images\others\image-20260205230039985.png)</p>
+<p><img src="/images/minicpu/image-20260206005819148.png" alt="image-20260206005819148"></p>
 <ol start="2">
 <li>一个ROM和一个RAM</li>
 </ol>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260205231452199.png" alt="image-20260205231452199"></p>
+<p><img src="/images/minicpu/image-20260205231452199.png" alt="image-20260205231452199"></p>
 <p>剩下的元件都要自己手搓更改，所以我就放在下面讲了，其中也有我遇见的一些坑。</p>
 <h2 id="手搓的元件"><a href="#手搓的元件" class="headerlink" title="手搓的元件"></a>手搓的元件</h2><ol>
 <li><h4 id="PC计数器是不可少的。"><a href="#PC计数器是不可少的。" class="headerlink" title="PC计数器是不可少的。"></a>PC计数器是不可少的。</h4></li>
@@ -261,11 +261,11 @@
 <li><h4 id="PC计数器的改造是需要的。"><a href="#PC计数器的改造是需要的。" class="headerlink" title="PC计数器的改造是需要的。"></a>PC计数器的改造是需要的。</h4></li>
 </ol>
 <p>为了适配我们的jalr命令，我们需要对PC计数器进行一定的改造。</p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260205232252811.png" alt="image-20260205232252811"></p>
+<p><img src="/images/minicpu/image-20260205232252811.png" alt="image-20260205232252811"></p>
 <p>我们需要把这个M1M2接口恒定设置为1，这里是让PC寄存器进入到load状态，让他的下接口可以读入数据。</p>
 <p>然后我们需要区分情况，当出现jalr命令时，PC计数器要跳到指定地址，正常指令时，PC计数器要正常加1,所以我这里通过多来两个寄存器来实现。（为什么是两个后面就明白了）</p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260205232833859.png" alt="image-20260205232833859"></p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260205232721587.png" alt="image-20260205232721587"></p>
+<p><img src="/images/minicpu/image-20260205232833859.png" alt="image-20260205232833859"></p>
+<p><img src="/images/minicpu/image-20260205232721587.png" alt="image-20260205232721587"></p>
 <p>我来讲解一下这个搭线的方法，下面寄存器的作用，是读取我们拆解jarl命令整来的地址，而上面的寄存器，则是记录当前的conter的地址值加一，以便于正常的运行程序的，他们通过一个分路选择器来选择，当jarl信号存在的时候，输入信号选择下面的寄存器进入conter，没有的时候，就是选上面的正常加一执行。</p>
 <p>而jarl命令还有一个特性，就是会将返回地址存在指定寄存器里面，这就又反应出了上边的寄存器的需要了，将这个寄存器进行乘四输入存储，就可以了。</p>
 <p>ps：有人可能会问这个clockk是什么，其实这里面全是非门，是为了拖慢clk的执行的，至于为什么要拖慢，全是那个除法器的锅，所以我不推荐用除法器。</p>
@@ -274,34 +274,34 @@
 </ol>
 <p>现在开始讲解码器的搭建，这里需要你对RISCV指令集的这八条指令有一个详细的了解，不了解的请返工看手册。</p>
 <p>我们先采用分线器进行初步的分离。</p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260205233947200.png" alt="image-20260205233947200"></p>
+<p><img src="/images/minicpu/image-20260205233947200.png" alt="image-20260205233947200"></p>
 <p>这是将机器码分解成了几个核心部分。</p>
 <h5 id="3-1-不得不品的立即数处理。"><a href="#3-1-不得不品的立即数处理。" class="headerlink" title="3.1.不得不品的立即数处理。"></a>3.1.不得不品的立即数处理。</h5><p>这里关于立即数的处理需要考虑到不同形式命令的编码情况。</p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260205234458999.png" alt="image-20260205234458999"></p>
+<p><img src="/images/minicpu/image-20260205234458999.png" alt="image-20260205234458999"></p>
 <p>这是我搭建的立即数处理器，根据不同的指令情况来输出立即数，当然，还得考虑负数的情况，这里采用了扩展器的sign模式来实现。</p>
-<h5 id="3-2-控制核心的搭建是简单但是重要的"><a href="#3-2-控制核心的搭建是简单但是重要的" class="headerlink" title="3.2.控制核心的搭建是简单但是重要的"></a>3.2.控制核心的搭建是简单但是重要的</h5><p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260205234832141.png" alt="image-20260205234832141"></p>
+<h5 id="3-2-控制核心的搭建是简单但是重要的"><a href="#3-2-控制核心的搭建是简单但是重要的" class="headerlink" title="3.2.控制核心的搭建是简单但是重要的"></a>3.2.控制核心的搭建是简单但是重要的</h5><p><img src="/images/minicpu/image-20260205234832141.png" alt="image-20260205234832141"></p>
 <p>这里就是识别指令的核心部分了，并不难理解，就是简单的信号拆解。</p>
 <ol start="4">
 <li><h3 id="控制单元的集成"><a href="#控制单元的集成" class="headerlink" title="控制单元的集成"></a>控制单元的集成</h3></li>
 </ol>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260205235030823.png" alt="image-20260205235030823"></p>
+<p><img src="/images/minicpu/image-20260205235030823.png" alt="image-20260205235030823"></p>
 <p>这里都是实现一些各种情况的处理，比如内存的写入写出，还有加法器的实现。</p>
-<h4 id="4-1-简单的ALU"><a href="#4-1-简单的ALU" class="headerlink" title="4.1.简单的ALU"></a>4.1.简单的ALU</h4><p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260205235147234.png" alt="image-20260205235147234"></p>
+<h4 id="4-1-简单的ALU"><a href="#4-1-简单的ALU" class="headerlink" title="4.1.简单的ALU"></a>4.1.简单的ALU</h4><p><img src="/images/minicpu/image-20260205235147234.png" alt="image-20260205235147234"></p>
 <p>没什么特色。</p>
 <ol start="5">
 <li><h3 id="真正的重头戏——内存的实现"><a href="#真正的重头戏——内存的实现" class="headerlink" title="真正的重头戏——内存的实现"></a>真正的重头戏——内存的实现</h3></li>
 </ol>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260205235406330.png" alt="image-20260205235406330"></p>
+<p><img src="/images/minicpu/image-20260205235406330.png" alt="image-20260205235406330"></p>
 <p>令人望而生畏，不是吗。</p>
 <p>这个内存模块的核心是RAM，其他的东西都是围绕RAM进行的条件判断。</p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260205235515763.png" alt="image-20260205235515763"></p>
+<p><img src="/images/minicpu/image-20260205235515763.png" alt="image-20260205235515763"></p>
 <p>这里对于输入进行了一系列判断，具体看名字也能知道引脚的作用。</p>
 <p>关于这边的接线可以说是十分混乱，因为这是我在debug的过程中不断改进的结果。</p>
 <p>首先还是四位对齐的问题，用位移器去实现就可以。</p>
 <p>关于sb和lbu这类字节写入的问题，RAM有一个开启字节的选项，记得打开。</p>
 <p>然后对于他们进行判断，其实通过分线器拿出来这些数值在除四后被抛弃的那两位就可以实现，通过分路选择器就可以达到了。</p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260206000046213.png" alt="image-20260206000046213"></p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260206000058762.png" alt="image-20260206000058762"></p>
+<p><img src="/images/minicpu/image-20260206000046213.png" alt="image-20260206000046213"></p>
+<p><img src="/images/minicpu/image-20260206000058762.png" alt="image-20260206000058762"></p>
 <p>这两部分各种负责的分线判断，其实就是为了实现字节写的功能，这里还是希望自己思考。</p>
 <p>在完成了这一部分的时候，我们的工作其实才刚刚完成了一半，甚至是一半都不到，因为后面的Debug阶段才是重点。还有一部分jarl的一点没有展示，但是不重要，属于很简单的部分。</p>
 <h2 id="欢迎来到地狱般的Debug阶段"><a href="#欢迎来到地狱般的Debug阶段" class="headerlink" title="欢迎来到地狱般的Debug阶段"></a>欢迎来到地狱般的Debug阶段</h2><p>Debug才是这里的重点。</p>
@@ -324,13 +324,13 @@
 <p>如果你查看了手册，那么你应该能明白RGB在logisim里是如何工作的。</p>
 <p>相应的，这个的地址也是要除以四的，就像RAM一样。</p>
 <p>而且我们不能将内存写入的和RGB写入的混淆，所以要专门画出来一片地址来给RGB，通过比较器和简单的门电路来实现这一段RGB可写或内存可写。</p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260206002804095.png" alt="image-20260206002804095"></p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260206002819362.png" alt="image-20260206002819362"></p>
+<p><img src="/images/minicpu/image-20260206002804095.png" alt="image-20260206002804095"></p>
+<p><img src="/images/minicpu/image-20260206002819362.png" alt="image-20260206002819362"></p>
 <p>这里我跑了一个程序，是一个一生一芯的logo。</p>
 <p>运行中：</p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260206003054405.png" alt="image-20260206003054405"></p>
+<p><img src="/images/minicpu/image-20260206003054405.png" alt="image-20260206003054405"></p>
 <p>成品：</p>
-<p><img src="C:\Users\Martis\AppData\Roaming\Typora\typora-user-images\image-20260206003638116.png" alt="image-20260206003638116"></p>
+<p><img src="/images/minicpu/image-20260206003638116.png" alt="image-20260206003638116"></p>
 <p>大概跑了四五分钟左右。</p>
 
         </div>
@@ -346,7 +346,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://g1en-114.github.io/2026/02/05/%E5%9F%BA%E4%BA%8ERISCV%E6%8C%87%E4%BB%A4%E7%9A%84mini%E5%A4%84%E7%90%86%E5%99%A8/">https://g1en-114.github.io/2026/02/05/%E5%9F%BA%E4%BA%8ERISCV%E6%8C%87%E4%BB%A4%E7%9A%84mini%E5%A4%84%E7%90%86%E5%99%A8/</a></span>
+                        <span><a href="https://g1en-114.github.io/2026/02/05/minicpu/">https://g1en-114.github.io/2026/02/05/minicpu/</a></span>
                     </p>
                 
                 
